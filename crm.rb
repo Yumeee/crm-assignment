@@ -36,10 +36,10 @@ class CRM
 
   def add_new_contact
     print "Enter first name:"
-    first_name = gets.chomp
+    first_name = gets.chomp.capitalize
 
     print "Enter last name:"
-    last_name = gets.chomp
+    last_name =  gets.chomp.capitalize
 
     print "Enter email:"
     email = gets.chomp
@@ -47,15 +47,25 @@ class CRM
     print "Enter notes about this contact:"
     note = gets.chomp
 
-    Contact.create(first_name, last_name, email,note)
+    contact = Contact.create(
+      first_name: first_name,
+      last_name:  last_name,
+      email:      email,
+      note:       note
+    )
+
+    contact.save;
+
   end
 
   def modify_existing_contact
-    contact_to_change = search_by_attribute
+    puts "What's the id of the contact you would like to modify?"
+    id_contact = gets.chomp.to_i
     puts "Which attribute would you like to update: first_name, last_name, email or note?"
     attribute = gets.chomp
     puts "What would you like to change it to?"
-    new_value = gets.chomp
+    new_value = gets.chomp.capitalize
+    contact_to_change = Contact.find(id_contact)
     contact_to_change.update(attribute, new_value)
     return
   end
@@ -63,7 +73,9 @@ class CRM
 
   def delete_contact
     puts "Let's find the contact you would like to delete."
-    contact_to_delete = search_by_attribute
+    puts "What's the id of the contact you'd like to delete?"
+    id_contact = gets.chomp.to_i
+    contact_to_delete = Contact.find(id_contact)
     Contact.delete(contact_to_delete)
   end
 
@@ -76,21 +88,17 @@ class CRM
     puts "What attribute are you finding the contact by: first_name, last_name, email or note?"
     attribute = gets.chomp
     puts "What's the contact's #{attribute}?"
-    value = gets.chomp
-    p Contact.find_by(attribute, value)
+    value = gets.chomp.capitalize
+    p Contact.find_by(attribute => value)
   end
 end
 
+at_exit do
+  ActiveRecord::Base.connection.close
+end
 
-
-yumee = Contact.create("Yumee", "Lee", "yumeehk@hotmail.com", "no notes")
-charlotte = Contact.create("Charlotte", "Louis", "chaloui@gmail.com", "paris")
 program = CRM.new
 program.main_menu
-#
-# modify_existing_contact("yumee")
 
-
-# puts Contact.find_by("first_name", "Yumee")
-# Contact.delete_all
-# p display_all_contacts
+# yumee = Contact.create("Yumee", "Lee", "yumeehk@hotmail.com", "no notes")
+# charlotte = Contact.create("Charlotte", "Louis", "chaloui@gmail.com", "paris")

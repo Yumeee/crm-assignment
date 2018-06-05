@@ -1,3 +1,4 @@
+gem 'activerecord', '=4.2.10'
 require 'active_record'
 require 'mini_record'
 
@@ -21,16 +22,14 @@ end
 
 Contact.auto_upgrade!
 
-at_exit do
-  ActiveRecord::Base.connection.close
-end
+
 
 # This method should initialize the contact's attributes
 #   def initialize(first_name,last_name, email, note)
 #     @first_name = first_name
 #     @last_name = last_name
 #     @email = email
-#     @note = note
+
 #     @id = @@id
 #     @@id += 1
 #   end
@@ -62,7 +61,7 @@ end
 #     elsif attribute == "email"
 #       @email = new_value
 #     elsif attribute == "note"
-#       @note = new_value
+
 #     end
 #     return self
 #   end
